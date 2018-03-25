@@ -1,0 +1,113 @@
+
+name "Advanced PoeSmoother"
+
+# Advanced PoeSmoother
+
+# remove effects
+
+# remove all microtransactions
+title "micro"
+restriction "Metadata/Effects/Microtransactions/.*\.pet$"
+execute "pet"
+restriction "Metadata/Effects/Microtransactions/.*\.epk$"
+execute "epk"
+restriction "Metadata/Effects/Microtransactions/.*\.aoc$"
+execute "PoeSmoo_aoc"
+
+# remove fog/sounds/rain and clean all areas
+title "clean enviro"
+restriction "\.env$"
+execute "PoeSmoo_env"
+
+# disable shadows and water/ocean waves
+title "disable shadows"
+restriction "^\./Shaders/Renderer/Shadows.ffx$"
+execute "ffx"
+
+# remove critters/pets/plants/blood trails... etc
+title "other effects"
+
+restriction "/Chests/Breach/.*\.ot$"
+execute "PoeSmoo_ot_map"
+
+restriction "\.atlas$"
+execute "atlas"
+
+restriction "^\./Metadata/Effects/Spells/ground_effects.*\.otc$"
+execute "PoeSmoo_otc"
+
+restriction "^\./Metadata/Critters/RoamingCritterBase\.otc$"
+restriction "^\./Metadata/Pet/Pet\.otc$"
+execute "otc"
+
+restriction "^\./Metadata/Monsters/Monster\.ot$"
+execute "ot"
+
+restriction "^\./Metadata/FmtParent\.aoc$"
+restriction "^\./Metadata/Parent\.aoc$"
+execute "PoeSmoo_aoc_lame"
+
+# empty all .epk (heavy effects) files
+title "zero effects"
+restriction "\.epk$"
+execute "epk"
+
+# null all .pet (particles) files
+title "zero particles"
+restriction "\.pet$"
+execute "pet"
+
+# remove all players
+title "remove players"
+restriction "^\./Metadata/Characters/Character.otc$"
+execute "PoeSmoo_otc_rem"
+
+# remove all monsters
+title "remove monsters"
+restriction "^\./Metadata/Monsters/Monster.otc$"
+execute "PoeSmoo_otc_rem"
+
+#title "custom settings"
+
+# advanced settings
+
+# remove skin meshes and all sounds
+# zero .aoc and zero .otc must be used together always
+#title "zero aoc files"
+title "zero aoc & otc files"
+restriction "\.aoc$"
+exclude "^\./Metadata/Terrain/"
+execute "PoeSmoo_aoc_zero"
+
+# remove preloading or adding any effect
+# zero .aoc and zero .otc must be used together always
+#title "zero otc files"
+restriction "\.otc$"
+exclude "^\./Metadata/Terrain/"
+execute "PoeSmoo_otc_zero"
+
+# use this only after the char is fully loaded
+title "no textures (black screen)"
+restriction "\.env$"
+execute "env_harder"
+restriction "^\./Shaders/Renderer/Texturing.ffx$"
+execute "ffx_harder"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

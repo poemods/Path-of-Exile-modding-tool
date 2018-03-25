@@ -1,0 +1,105 @@
+name "Mods by extension"
+
+title ".epk : heavy Effects" colorgreen
+restriction "\.epk$"
+execute "epk"
+
+title ".pet : Particles" colorgreen
+restriction "\.pet$"
+execute "pet"
+
+title ".mat : BlendMode ColourTexture" colorgreen
+restriction "\.mat$"
+execute "mat"
+
+title ".aoc : ParticleEffects DecalEvents Lights Sounds WindEvents" colorgreen
+restriction "\.aoc$"
+execute "aoc"
+
+title ".aoc harder : Invisible Spells" colorgreen
+restriction "^\./Metadata/Effects/Environment/.*\.aoc$"
+restriction "^\./Metadata/Effects/Microtransactions/.*\.aoc$"
+restriction "^\./Metadata/Effects/Spells/.*\.aoc$"
+restriction "^\./Metadata/Terrain/Doodads/.*\.aoc$"
+execute "aoc_harder"
+
+title ".ao : Hull AttachedAnimatedObjects" colorgreen
+restriction "\.ao$"
+execute "ao"
+
+title ".env : Fog SurfaceWater ; rain.pet" colorgreen
+restriction "\.env$"
+execute "env"
+
+title ".atlas : Decals grass plants slime gore" colorgreen
+restriction "\.atlas$"
+execute "atlas"
+
+title ".arm : Rooms Decals .atlas" colorgreen
+restriction "\.arm$"
+execute "arm"
+
+title ".dlp : Terrain Decals .fmt" colorgreen
+restriction "\.dlp$"
+execute "dlp"
+
+title ".mtd : Terrain .mat .dlp" colorgreen
+restriction "\.mtd$"
+execute "mtd"
+
+title ".ogg : Sound (1s silence)" colorgreen
+restriction "\.ogg$"
+execute "ogg"
+
+title ".otc : disable_rendering" coloryellow
+restriction "\.otc$"
+execute "otc"
+
+title ".aoc .otc .ao : Invisible but animated" coloryellow
+restriction "\.(ao|aoc|otc)$"
+execute "aoc_otc_ao"
+
+title ".env harder : black screen" colorred
+restriction "\.env$"
+execute "env_harder"
+
+title ".ffx : disable Shadows" colorred
+restriction "^\./Shaders/Renderer/Shadows.ffx$"
+execute "ffx"
+
+title ".ffx harder : texturing grass ... (clear all functions)" colorred
+restriction "\.ffx$"
+execute "ffx_harder"
+
+title ".ot : remove Dead bodies after kill" colorred
+restriction "^\./Metadata/Monsters/Monster\.ot$"
+execute "ot"
+
+title ".dds : Textures (resize)" colorred
+#restriction "/Art/2DArt/.*\.dds$"
+#restriction "/Art/2DItems/.*\.dds$"
+restriction "/Art/Microtransactions/.*\.dds$"
+restriction "/Art/Models/.*\.dds$"
+restriction "/Art/particles/.*\.dds$"
+#restriction "/Art/Textures/Characters/.*\.dds$"
+restriction "/Art/Textures/Doodads/.*\.dds$"
+restriction "/Art/Textures/Environment/.*\.dds$"
+#restriction "/Art/Textures/Interface/2D/.*\.dds$"
+restriction "/Art/Textures/Items/.*\.dds$"
+restriction "/Art/Textures/Misc/.*\.dds$"
+restriction "/Art/Textures/Monsters/.*\.dds$"
+restriction "/Art/Textures/NPC/.*\.dds$"
+restriction "/Art/Textures/Pet/.*\.dds$"
+restriction "/Metadata/EnvironmentSettings/.*\.dds$"
+restriction "/minimap/.*\.dds$"
+exclude "/art/2dart/cubemaps/"
+execute "dds"
+
+
+
+
+
+
+
+
+

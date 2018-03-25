@@ -1,0 +1,36 @@
+
+name "Tabula Rasa model change"
+
+# Tabula Rasa texture and model change for each classes
+
+# templar = StrInt
+
+title "Tabula Rasa Templar"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaStrInt\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt\.sm$"
+
+# witch = Int
+
+title "Tabula Rasa Witch"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaInt\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourInt\.sm$"
+
+title "Tabula Rasa Scion"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaStrDexInt\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrDexInt\.sm$"
+
+title "Tabula Rasa Ranger"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaDex\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourDex\.sm$"
+
+title "Tabula Rasa Duelist"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaStrDex\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrDex\.sm$"
+
+title "Tabula Rasa Marauder"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaStr\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStr\.sm$"
+
+title "Tabula Rasa Shadow"
+restriction "/Art/Models/Items/Armours/BodyArmours/Unique/TabulaRasa/BodyTabulaRasaDexInt\.sm$"
+replacewith "/Art/Models/Items/Armours/BodyArmours/Microtransactions/DeicideArmour/DeicideArmourDexInt\.sm$"

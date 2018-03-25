@@ -1,0 +1,11 @@
+
+name "No microtransaction effects"
+
+# remove all microtransaction effects
+
+restriction "/Metadata/Effects/Microtransactions/.*\.epk$"
+execute "epk"
+restriction "/Metadata/Effects/Microtransactions/.*\.pet$"
+execute "pet"
+restriction "/Metadata/Effects/Microtransactions/.*\.aoc$"
+execute "aoc_harder"
