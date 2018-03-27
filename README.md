@@ -1,4 +1,4 @@
-# Path of Exile modding and mods
+# Path of Exile modding tool and mods
 
 - Search modify compare extract insert replace armour spells microtransactions in any way.
 - Restrict and exclude filters to modify only some files.
