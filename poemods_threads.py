@@ -23,12 +23,17 @@ class manager(object):
         self.sendsearch=queue.Queue()
         self.sendview=queue.Queue()
         self.threadskeeprunning=True
-        actionthreadthr=threading.Thread(target=self.actionthread, args=(5, ))
-        actionthreadthr.start()
-        searchthreadthr=threading.Thread(target=self.searchthread, args=(5, ))
-        searchthreadthr.start()
-        viewthreadthr=threading.Thread(target=self.viewthread, args=(5, ))
-        viewthreadthr.start()
+        self.mylock=threading.Lock()
+        self.workqueue = queue.Queue()
+        for i in range(4) :
+            t=threading.Thread(target=self.workerthread)
+            t.daemon=True
+            t.start()
+        threading.Thread(target=self.actionthread, args=(5, )).start()
+        threading.Thread(target=self.searchthread, args=(5, )).start()
+        threading.Thread(target=self.viewthread, args=(5, )).start()
+        self.maxcount=0
+        self.curcount=0
 
     def actionthread(self, i):
         while self.threadskeeprunning is True :
@@ -101,8 +106,16 @@ class manager(object):
             elif vala[0]=="modify" :
                 if len(self.modg.fullfilelistdic)>0 :
                     matchinglist=self.getfilteredlist(vala[1], vala[2], vala[3], vala[4])
-                    self.sendmessage.put(["%d files are being modified by module : %s" % (len(matchinglist), vala[5]), "modify", vala[6], True])
-                    self.modify("mods."+vala[5], matchinglist)
+                    matchinglistl=len(matchinglist)
+                    self.sendmessage.put(["%d files are being modified by module : %s" % (matchinglistl, vala[5]), "modify", vala[6], True])
+                    self.maxcount=matchinglistl
+                    self.curcount=0
+                    mymod=__import__("mods."+vala[5], fromlist=['bebop'])
+                    with open(self.modg.ggpkname, "r+b") as ggpkpointerio :
+                        for filename in matchinglist :
+                            self.workqueue.put([filename, mymod, ggpkpointerio])
+                        self.workqueue.join()
+                    self.modg.saveinfo()
                     self.sendmessage.put(["", "modify", vala[6], False])
                 else :
                     self.sendmessage.put(["Please scan your Content.ggpk first."])
@@ -152,7 +165,7 @@ class manager(object):
             return False
         if len(filedata)<4 :
             return False
-        if filedata[0] == b'*' and filedata[3]>=0x20 :
+        if filedata[0] == ord("*") and filedata[3]>=0x20 :
             return False
         if filedata[:4] == b'DDS ' :
             return False
@@ -170,7 +183,7 @@ class manager(object):
             return None
         if len(filedata)<4 :
             return None
-        if filedata[0] == b'*' and filedata[3]>=0x20 :
+        if filedata[0] == ord("*") and filedata[3]>=0x20 :
             return None
         if filedata[:4] == b'DDS ' :
             return filedata
@@ -183,38 +196,25 @@ class manager(object):
             else :
                 return filedatamod
 
-    def modify(self, modulename, matchinglist) :
-        mymod=__import__(modulename, fromlist=['bebop'])
-        lock = threading.Lock()
-        with open(self.modg.ggpkname, "r+b") as ggpkpointerio :
-            def worker() :
-                while True :
-                    filename = q.get()
-                    if filename=="" :
-                        break
-                    with lock:
-                        backupfiledata=self.modg.readbinarydata(filename, ggpkpointerio)
-                    if backupfiledata is not None :
-                        filedatamod, encoding, bom = mymod.execute(filename, backupfiledata, self.modg)
-                        if filedatamod is not None :
-                            if encoding is None :
-                                filedatamodified = filedatamod
-                            else :
-                                filedatamodified = bom + filedatamod.encode(encoding)
-                            writethis = self.modg.generateheader(filename, filedatamodified)
-                            with lock:
-                                self.modg.writebinarydata(filename, writethis, ggpkpointerio)
-                    q.task_done()
-            q = queue.Queue()
-            for i in range(4) :
-                t=threading.Thread(target=worker)
-                t.start()
-            for filename in matchinglist :
-                q.put(filename)
-            q.join()
-            for i in range(4) :
-                q.put("")
-        self.modg.saveinfo()
+    def workerthread(self) :
+        while True :
+            filename = self.workqueue.get()
+            with self.mylock:
+                backupfiledata=self.modg.readbinarydata(filename[0], filename[2])
+            if backupfiledata is not None :
+                filedatamod, encoding, bom = filename[1].execute(filename[0], backupfiledata, self.modg)
+                if filedatamod is not None :
+                    if encoding is None :
+                        filedatamodified = filedatamod
+                    else :
+                        filedatamodified = bom + filedatamod.encode(encoding)
+                    writethis = self.modg.generateheader(filename[0], filedatamodified)
+                    with self.mylock:
+                        self.modg.writebinarydata(filename[0], writethis, filename[2])
+            #self.curcount+=1
+            #if self.curcount%500==0 :
+            #    print("%d / %d" % (self.curcount, self.maxcount))
+            self.workqueue.task_done()
 
     def modifyreplace(self, matchinglist, replacewiththis) :
         with open(self.modg.ggpkname, "r+b") as ggpkpointerio :

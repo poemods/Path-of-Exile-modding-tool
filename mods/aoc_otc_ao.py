@@ -16,7 +16,6 @@ masterfilter_exclude=[
 
 condition_aoc=[
    "ClientAnimationController",
-   "BoneGroups",
    ]
 condition_ao=[
    "AnimationController",

@@ -12,7 +12,7 @@ title ".mat : BlendMode ColourTexture" colorgreen
 restriction "\.mat$"
 execute "mat"
 
-title ".aoc : ParticleEffects DecalEvents Lights Sounds WindEvents" colorgreen
+title ".aoc : Particle Decal Light Sound Wind" colorgreen
 restriction "\.aoc$"
 execute "aoc"
 

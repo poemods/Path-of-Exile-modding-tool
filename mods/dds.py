@@ -36,7 +36,7 @@ with open(os.path.join("assets", "minimal.dds"), "rb") as fin :
    minimaldds=fin.read()
 
 def execute(filename, filedata, modifyggpk):
-    if filedata[0] == b'*' and filedata[3]>=0x20 :
+    if filedata[0] == ord("*") and filedata[3]>=0x20 :
         return None, None, None
     reencodeneeded=False
     if filedata[:4] != b'DDS ' :
