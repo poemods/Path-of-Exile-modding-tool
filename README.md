@@ -6,7 +6,7 @@
 - Batch process files. Create automods (.txt files with basic filters and commands) to apply all your mods in sequence (see two examples below).
 - Resize textures. Textures (.DDS) are decompressed when extracted, ready to feed a DDS optimizer (DDSOpt, ...) to improve both performance and quality.
 - Automatic backup. Defragment. Works on all PoE versions, does not depend on Grinding Gear Games updates : file search and file mods rely on Python.re regular expressions
-- Any OS. Install [Python 3](https://www.python.org/) and as admin run `pip3 install brotli Wand`.
+- Any OS. Install [Python 3](https://www.python.org/) and as admin run `pip3 install brotli`. Click or run `__init__.py` to launch app.
 
 ## TabulaRasa model change for MTX
 
@@ -25,11 +25,11 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 
 ![Advanced PoeSmoother](docs/Scrot.png)
 
-*Another automod : improved Advanced PoeSmoother, does not depend on Gringind Gear Games updates.*
+*Another automod : improved Advanced PoeSmoother, does not depend on GGG updates.*
 
 ## Create a new mod
 
-#### basic
+#### Basic
 
 1. Create a new file in the mods folder named trl_0.py
 ```
@@ -49,14 +49,17 @@ restriction "\.trl$"
 execute "trl_0"
 ```
 
-#### With Python.re
+#### Using Python.re
 
 1. Create a new file in the mods folder named aoc_nosound.py
 ```
 import re
 def execute(filename, backupfiledata, modifyggpk):
   filedata, encoding, bom = modifyggpk.stringcleanup(backupfiledata, "UTF-16-LE")
+  # -- modify filedata string here --
   filedatamod=re.sub(r'SoundEvents.*?\{.*?\}', r'SoundEvents\r\n{\r\n}', filedata, flags=re.DOTALL)
+  # ...
+  # -- give back filedatamod string --
   return filedatamod, encoding, bom
 ```
 This mod clears everything between the SoundEvents brackets, if any. See [Python.re documentation](https://docs.python.org/3/library/re.html).
@@ -95,4 +98,4 @@ Each .txt file put in the automods folder will be shown in the application. All 
 
 Repeat (3. 4.) if needed. Checkboxes (2.) are optional.
 
-You can check your regular expressions in the app's restrict/exclude filter fields, with the Search button. All of these regexp ignore case : Python.re's `flags=re.IGNORECASE` is set. Folder separator has to be `/`.
+You can check your regular expressions in the app's restrict/exclude filter fields, thanks to the Search button. All of these regexp ignore case : Python.re's `flags=re.IGNORECASE` is set. Folder separator has to be `/`.
