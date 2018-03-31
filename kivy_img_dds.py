@@ -230,7 +230,7 @@ class DDSFile(object):
         self.count = 1
         if check_flags(meta.flags, DDSD_MIPMAPCOUNT):
             if not check_flags(meta.caps1, DDSCAPS_COMPLEX | DDSCAPS_MIPMAP):
-                raise DDSException('Invalid mipmap without flags')
+                raise DDSException('Invalid mipmap without flags 0x%08x' % (meta.caps1))
             self.count = meta.mipmapCount
 
         hasrgb = check_flags(meta.pf_flags, DDPF_RGB)
@@ -255,7 +255,7 @@ class DDSFile(object):
         elif check_flags(meta.pf_flags, DDPF_FOURCC):
             dxt = meta.pf_fourcc
             if dxt not in (DDS_DXT1, DDS_DXT2, DDS_DXT3, DDS_DXT4, DDS_DXT5):
-                raise DDSException('Unsupported FOURCC %08x' % (dxt))
+                raise DDSException('Unsupported FOURCC 0x%08x' % (dxt))
         else:
             raise DDSException('Unsupported format specified')
 
@@ -263,54 +263,93 @@ class DDSFile(object):
             block = align_value(bpp, 8) // 8
             pitch = align_value(block * meta.width, 4)
 
-        if check_flags(meta.flags, DDSD_LINEARSIZE):
-            if dxt in (0, 1, 2, 3):
+        size = 0
+        if check_flags(meta.flags, DDSD_LINEARSIZE) :
+            if dxt in (0, 1, 2, 3) :
                 size = pitch * meta.height
             else:
                 size = dxt_size(meta.width, meta.height, dxt)
 
         datal = len(data)
 
+        lastwidth = 0
+        lastheight = 0
+        lastposition = 0
+        lastmipmapcount = 0
         w = meta.width
         h = meta.height
         newwidth = w
         newheight = h
         newmipmapcount = 0
-        for i in range(self.count):
-            if dxt in (0, 1, 2, 3):
+        saved = False
+        i=0
+        while position<datal :
+            if dxt in (0, 1, 2, 3) :
                 size = align_value(block * w, 4) * h
             else:
                 size = dxt_size(w, h, dxt)
-            if position + size > datal:
-                raise DDSException('Truncated image for mipmap %d' % (i))
+            if position + size > datal :
+                raise DDSException('Truncated image for mipmap %d at %d +size %d > %d total size' % (i, position, size, datal))
             #print("%2d : %4d x %4d at offset %8d mipsize=%8d remaining=%8d" % (i, w, h, position, size, datal-position))
-            if w <= maxpixels and h <= maxpixels :
-                meta.width = w
-                meta.height = h
-                meta.mipmapCount = self.count -i
-                fields = dict(DDSFile.fields)
-                fields_keys = list(fields.keys())
-                fields_index = list(fields.values())
-                mget = self.meta.get
-                header = []
-                for idx in range(31):
-                    if idx in fields_index:
-                        value = mget(fields_keys[fields_index.index(idx)], 0)
-                    else:
-                        value = 0
-                    header.append(value)
-                self.out = b'DDS ' + pack('I' * 31, *header) + data[position:]
-                break
+            if saved is False :
+                lastwidth = w
+                lastheight = h
+                lastposition = position
+                lastmipmapcount = self.count - i
+                if w <= maxpixels and h <= maxpixels :
+                    saved = True
+                    #fields = dict(DDSFile.fields)
+                    #fields_keys = list(fields.keys())
+                    #fields_index = list(fields.values())
+                    #mget = self.meta.get
+                    #header = []
+                    #for idx in range(31) :
+                    #    if idx in fields_index :
+                    #        value = mget(fields_keys[fields_index.index(idx)], 0)
+                    #    else:
+                    #        value = 0
+                    #    header.append(value)
+                    #self.out = b'DDS ' + pack('I' * 31, *header) + data[position:]
             position += size
-            if w == 1 and h == 1:
+            if w == 1 and h == 1 :
                 break
             w = max(1, w // 2)
             h = max(1, h // 2)
+            i+=1
 
-        if self.out is None :
-            raise DDSException("%d mipmap(s) : %d x %d" % (meta.mipmapCount, meta.width, meta.height))
+        if i==1 :
+            raise DDSException("only one mipmap %4dx%4d" % (meta.width, meta.height))
 
+        meta.width = lastwidth
+        meta.height = lastheight
+        meta.mipmapCount = lastmipmapcount
+        newwidth = (lastwidth).to_bytes(4, byteorder='little', signed=True)
+        newheight = (lastheight).to_bytes(4, byteorder='little', signed=True)
+        newmipmapcount = (lastmipmapcount).to_bytes(4, byteorder='little', signed=True)
+        self.out = data[:12] + newheight + newwidth + data[20:28] + newmipmapcount + data[32:128] + data[lastposition:]
         self._dxt = dxt
+
+    def save(self, filename):
+        if len(self.images) == 0:
+            raise DDSException('No images to save')
+
+        fields = dict(DDSFile.fields)
+        fields_keys = list(fields.keys())
+        fields_index = list(fields.values())
+        mget = self.meta.get
+        header = []
+        for idx in range(31):
+            if idx in fields_index:
+                value = mget(fields_keys[fields_index.index(idx)], 0)
+            else:
+                value = 0
+            header.append(value)
+
+        with open(filename, 'wb') as fd:
+            fd.write('DDS ')
+            fd.write(pack('I' * 31, *header))
+            for image in self.images:
+                fd.write(image)
 
     def add_image(self, level, bpp, fmt, width, height, data):
         assert(bpp == 32)

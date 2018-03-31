@@ -49,11 +49,8 @@ class manager(object):
                     self.sendmessage.put(["", "scan modg", "", False])
             elif vala[0]=="defragment" :
                 self.sendmessage.put(["Defragmenting %s" % (self.modg.ggpkname), "defragment", "", True])
-                if os.path.exists(vala[1]) is True :
-                    self.modg.defragment(vala[1])
-                    self.sendmessage.put(["Defragmented to : %s" % (vala[1]), "defragment", "", False])
-                else :
-                    self.sendmessage.put(["No path to : %s" % (vala[1]), "defragment", "", False])
+                self.modg.defragment(vala[1])
+                self.sendmessage.put(["Defragmented to : %s" % (vala[1]), "defragment", "", False])
             elif vala[0]=="extract" :
                 if len(self.modg.fullfilelistdic)>0 :
                     matchinglist=self.getfilteredlist(vala[1], vala[2], vala[3], vala[4])
@@ -104,21 +101,24 @@ class manager(object):
                 else :
                     self.sendmessage.put(["Please scan backup Content.ggpk first."])
             elif vala[0]=="modify" :
-                if len(self.modg.fullfilelistdic)>0 :
-                    matchinglist=self.getfilteredlist(vala[1], vala[2], vala[3], vala[4])
-                    matchinglistl=len(matchinglist)
-                    self.sendmessage.put(["%d files are being modified by module : %s" % (matchinglistl, vala[5]), "modify", vala[6], True])
-                    self.maxcount=matchinglistl
-                    self.curcount=0
-                    mymod=__import__("mods."+vala[5], fromlist=['bebop'])
-                    with open(self.modg.ggpkname, "r+b") as ggpkpointerio :
-                        for filename in matchinglist :
-                            self.workqueue.put([filename, mymod, ggpkpointerio])
-                        self.workqueue.join()
-                    self.modg.saveinfo()
-                    self.sendmessage.put(["", "modify", vala[6], False])
-                else :
+                if len(self.modg.fullfilelistdic)==0 :
                     self.sendmessage.put(["Please scan your Content.ggpk first."])
+                    continue
+                if len(vala[1])+len(vala[2])+len(vala[3])+len(vala[4])==0 :
+                    self.sendmessage.put(["Please be more specific in your filters."])
+                    continue
+                matchinglist=self.getfilteredlist(vala[1], vala[2], vala[3], vala[4])
+                matchinglistl=len(matchinglist)
+                self.sendmessage.put(["%d files are being modified by module : %s" % (matchinglistl, vala[5]), "modify", vala[6], True])
+                self.maxcount=matchinglistl
+                self.curcount=0
+                mymod=__import__("mods."+vala[5], fromlist=['bebop'])
+                with open(self.modg.ggpkname, "r+b") as ggpkpointerio :
+                    for filename in matchinglist :
+                        self.workqueue.put([filename, mymod, ggpkpointerio])
+                    self.workqueue.join()
+                self.modg.saveinfo()
+                self.sendmessage.put(["", "modify", vala[6], False])
             elif vala[0]=="restore" :
                 if len(self.modg.fullfilelistdic)==0 :
                     self.sendmessage.put(["Please scan your Content.ggpk first."])
@@ -199,21 +199,22 @@ class manager(object):
     def workerthread(self) :
         while True :
             filename = self.workqueue.get()
-            with self.mylock:
-                backupfiledata=self.modg.readbinarydata(filename[0], filename[2])
-            if backupfiledata is not None :
-                filedatamod, encoding, bom = filename[1].execute(filename[0], backupfiledata, self.modg)
-                if filedatamod is not None :
-                    if encoding is None :
-                        filedatamodified = filedatamod
-                    else :
-                        filedatamodified = bom + filedatamod.encode(encoding)
-                    writethis = self.modg.generateheader(filename[0], filedatamodified)
-                    with self.mylock:
-                        self.modg.writebinarydata(filename[0], writethis, filename[2])
-            #self.curcount+=1
-            #if self.curcount%500==0 :
-            #    print("%d / %d" % (self.curcount, self.maxcount))
+            if self.threadskeeprunning is True :
+                with self.mylock:
+                    backupfiledata=self.modg.readbinarydata(filename[0], filename[2])
+                if backupfiledata is not None :
+                    filedatamod, encoding, bom = filename[1].execute(filename[0], backupfiledata, self.modg)
+                    if filedatamod is not None :
+                        if encoding is None :
+                            filedatamodified = filedatamod
+                        else :
+                            filedatamodified = bom + filedatamod.encode(encoding)
+                        writethis = self.modg.generateheader(filename[0], filedatamodified)
+                        with self.mylock:
+                            self.modg.writebinarydata(filename[0], writethis, filename[2])
+                #self.curcount+=1
+                #if self.curcount%500==0 :
+                #    print("%d / %d" % (self.curcount, self.maxcount))
             self.workqueue.task_done()
 
     def modifyreplace(self, matchinglist, replacewiththis) :

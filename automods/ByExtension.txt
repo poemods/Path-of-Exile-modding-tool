@@ -75,16 +75,16 @@ title ".ot : remove Dead bodies after kill" colorred
 restriction "^\./Metadata/Monsters/Monster\.ot$"
 execute "ot"
 
-#title ".dds : Textures (resize 64px max)" colorred
-#restriction "/Art/2DArt/.*\.dds$"
-#restriction "/Art/2DItems/.*\.dds$"
+title ".dds : Textures (resize <= px max)" colorred
+exclude "/Art/2DArt/.*\.dds$"                        # skill buff icons
+exclude "/Art/2DItems/.*\.dds$"                      # 2D Armour
 #restriction "/Art/Microtransactions/.*\.dds$"
 #restriction "/Art/Models/.*\.dds$"
 #restriction "/Art/particles/.*\.dds$"
 #restriction "/Art/Textures/Characters/.*\.dds$"
 #restriction "/Art/Textures/Doodads/.*\.dds$"
 #restriction "/Art/Textures/Environment/.*\.dds$"
-#restriction "/Art/Textures/Interface/2D/.*\.dds$"
+exclude "/Art/Textures/Interface/2D/.*\.dds$"        # interface buttons
 #restriction "/Art/Textures/Items/.*\.dds$"
 #restriction "/Art/Textures/Misc/.*\.dds$"
 #restriction "/Art/Textures/Monsters/.*\.dds$"
@@ -92,8 +92,8 @@ execute "ot"
 #restriction "/Art/Textures/Pet/.*\.dds$"
 #restriction "/Metadata/EnvironmentSettings/.*\.dds$"
 #restriction "/minimap/.*\.dds$"
-#restriction "\.dds$"
-#execute "dds"
+restriction "\.dds$"
+execute "dds"
 
 
 

@@ -53,10 +53,10 @@ def execute(filename, filedata, modifyggpk):
             return None, None, None
 
     try :
-        # max size allowed = 64 width or 64 height
-        dds = kivy_img_dds.DDSFile(filedata, 64)
+        # max size allowed = width or height
+        dds = kivy_img_dds.DDSFile(filedata, 32)
         filedata = dds.out
-        #print("%d x %d : %d" % (dds.width, dds.height, dds.count))
+        #print("%d x %d %s %d %s" % (dds.width, dds.height, dds.dxt, dds.mipmapCount, filename))
     except Exception as e :
         print("%s %s" % (str(e), filename))
         return None, None, None
@@ -79,9 +79,7 @@ def execute(filename, filedata, modifyggpk):
     #if reencodeneeded is True :
     #    filedatal=len(filedata)
     #    newdecsize = (filedatal).to_bytes(4, byteorder='little', signed=True)
-    #    filedatamod = newdecsize + brotli.compress(filedata)
-    #else :
-    #    filedatamod = filedata
+    #    filedata = newdecsize + brotli.compress(filedata)
     return filedata, None, None
 
 
