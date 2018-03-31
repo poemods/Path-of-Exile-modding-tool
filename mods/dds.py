@@ -6,33 +6,16 @@ import re
 import os
 import brotli
 import kivy_img_dds
-import npedotnet_dds
-from PIL import Image
+#import npedotnet_dds
+#from PIL import Image
 
 displaylabel=""
 
 masterfilter_restrict=[
         "\.dds$"
-        #"/Art/2DArt/.*\.dds$",
-        #"/Art/2DItems/.*\.dds$",
-        #"/Art/Microtransactions/.*\.dds$",
-        #"/Art/Models/.*\.dds$",
-        #"/Art/particles/.*\.dds$",
-        #"/Art/Textures/Characters/.*\.dds$",
-        #"/Art/Textures/Doodads/.*\.dds$",
-        #"/Art/Textures/Environment/.*\.dds$",
-        #"/Art/Textures/Interface/2D/.*\.dds$",
-        #"/Art/Textures/Items/.*\.dds$",
-        #"/Art/Textures/Misc/.*\.dds$",
-        #"/Art/Textures/Monsters/.*\.dds$",
-        #"/Art/Textures/NPC/.*\.dds$",
-        #"/Art/Textures/Pet/.*\.dds$",
-        #"/Metadata/EnvironmentSettings/.*\.dds$",
-        #"/minimap/.*\.dds$",
     ]
 
 masterfilter_exclude=[
-        #"/art/2dart/cubemaps/",
     ]
 
 with open(os.path.join("assets", "minimal.dds"), "rb") as fin :
@@ -68,36 +51,30 @@ def execute(filename, filedata, modifyggpk):
         if len(filedata)!=size :
             print("Error wrong size after brotli decode")
             return None, None, None
-    #try:
-        #dds = kivy_img_dds.DDSFile(data=filedata)
-        #width, height = dds.size
-        # print("%d x %d : %s : %s" % (width, height, str(dds.dxt), filename))
-        # dds.images[0]
-    #except Exception as e :
-    #    print("%s %s" % (filename, str(e)))
 
-    dds = npedotnet_dds.DDSReader()
-    ddsw = dds.getWidth(filedata)
-    ddsh = dds.getHeight(filedata)
-    mipmap = dds.getMipmap(filedata)
     try :
-        ddstype = dds.getType(filedata)
-        #print("%4d x %4d %2d 0x%08x %s" % (ddsw, ddsh, mipmap, ddstype, filename))
+        # max size allowed = 64 width or 64 height
+        dds = kivy_img_dds.DDSFile(filedata, 64)
+        filedata = dds.out
+        #print("%d x %d : %d" % (dds.width, dds.height, dds.count))
     except Exception as e :
-        print("%4d x %4d %2d %s " % (ddsw, ddsh, mipmap, filename) + str(e))
+        print("%s %s" % (str(e), filename))
+        return None, None, None
 
-    #ARGB = npedotnet_dds.Order(16, 8, 0, 24)
-    #RGBA = npedotnet_dds.Order(24, 16, 8, 0)
-    #img = dds.read(filedata, RGBA, 0)
-    #byteimg=b''
-    #for pix in img :
-    #    byteimg+=(pix).to_bytes(8, byteorder='little', signed=True)
-    #image = Image.frombytes('RGBA', (w, h), byteimg)
-    #image.show()
-
-    # dds.images[0]
-
-
+    #try :
+    #    dds = npedotnet_dds.DDSReader()
+    #    ddsw = dds.getWidth(filedata)
+    #    ddsh = dds.getHeight(filedata)
+    #    mipmap = dds.getMipmap(filedata)
+    #    ddstype = dds.getType(filedata)
+    #    if ddstype in npedotnet_dds.imagetype :
+    #        print("%4d x %4d %2d 0x%08x %s %s" % (ddsw, ddsh, mipmap, ddstype, npedotnet_dds.imagetype[ddstype], filename))
+    #    RGBA = npedotnet_dds.Order(24, 16, 8, 0)
+    #    byteimg = dds.read(filedata, RGBA, 0)
+    #    image = Image.frombytes('RGBA', (ddsw, ddsw), byteimg)
+    #    image.show()
+    #except Exception as e :
+    #    print("%s %s" % (str(e), filename))
 
     #if reencodeneeded is True :
     #    filedatal=len(filedata)
@@ -105,8 +82,7 @@ def execute(filename, filedata, modifyggpk):
     #    filedatamod = newdecsize + brotli.compress(filedata)
     #else :
     #    filedatamod = filedata
-    #return filedatamod, None, None
-    return None, None, None
+    return filedata, None, None
 
 
 

@@ -75,7 +75,7 @@ title ".ot : remove Dead bodies after kill" colorred
 restriction "^\./Metadata/Monsters/Monster\.ot$"
 execute "ot"
 
-title ".dds : Textures (resize)" colorred
+#title ".dds : Textures (resize 64px max)" colorred
 #restriction "/Art/2DArt/.*\.dds$"
 #restriction "/Art/2DItems/.*\.dds$"
 #restriction "/Art/Microtransactions/.*\.dds$"
@@ -92,9 +92,16 @@ title ".dds : Textures (resize)" colorred
 #restriction "/Art/Textures/Pet/.*\.dds$"
 #restriction "/Metadata/EnvironmentSettings/.*\.dds$"
 #restriction "/minimap/.*\.dds$"
-#exclude "/art/2dart/cubemaps/"
-restriction "\.dds$"
-execute "dds"
+#restriction "\.dds$"
+#execute "dds"
+
+
+
+
+
+
+
+
 
 
 
