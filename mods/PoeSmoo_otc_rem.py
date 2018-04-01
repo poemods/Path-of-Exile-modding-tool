@@ -27,7 +27,8 @@ def execute(filename, backupfiledata, modifyggpk):
         filedatamod=re.sub(r'(Render[\t\r\n ]*\{.*?)\}', r'\g<1>\tdisable_rendering = true\r\n}', filedatamod, flags=re.DOTALL)
 
     if re.search(r'on_construction_complete', filedatamod) is not None :
-        filedatamod=re.sub(r'on_construction_complete.*?\n', r'on_construction_complete = "RemoveEffects();"\r\n', filedatamod, flags=re.DOTALL)
+        if re.search(r'on_construction_complete.*DisableRendering', filedatamod) is None :
+            filedatamod=re.sub(r'on_construction_complete.*?\n', r'on_construction_complete = "RemoveEffects();"\r\n', filedatamod, flags=re.DOTALL)
     elif re.search(r'BaseEvents[\t\r\n ]*\{', filedatamod) is not None :
         filedatamod=re.sub(r'(BaseEvents[\t\r\n ]*\{.*?)\}', r'\g<1>\ton_construction_complete = "RemoveEffects();"\r\n}', filedatamod, flags=re.DOTALL)
     else :

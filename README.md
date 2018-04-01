@@ -41,7 +41,7 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 
 #### 6-boxing bot config
 
-![6-boxing bots](docs/6BoxingBot.png)
+![6-boxing bot](docs/6BoxingBot.png)
 
 1. Select the "Mods by extension" automod
 2. Check almost everything (See pic above)
