@@ -43,12 +43,13 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 
 ![6-boxing bots](docs/6BoxingBot.png)
 
-1. Select the "Mods by extension" automod.
-2. Check almost everything (See pic above).
+1. Select the "Mods by extension" automod
+2. Check almost everything (See pic above)
 3. Click Modify
 4. Click "Defragment" and then "Defragment now"
-5. Copy over the defragmented Content.ggpk.defrag to your Content.ggpk
-6. In Path of Exile's production_Config.ini put texture_quality=10
+6. Copy the defragmented Content.ggpk.defrag over your game Content.ggpk
+7. Close the app or click the Scan button
+8. In Path of Exile's production_Config.ini put texture_quality=10
 
 #### Basic mod
 

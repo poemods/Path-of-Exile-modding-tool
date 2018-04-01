@@ -518,6 +518,8 @@ def quitcallback():
     root.destroy()
 
 getdefaultpath()
+# force rescan in case of errors
+# actionqueue.put(["scan modg", modifyggpk ,True])
 actionqueue.put(["scan modg", modifyggpk ,False])
 
 root.protocol("WM_DELETE_WINDOW", quitcallback)

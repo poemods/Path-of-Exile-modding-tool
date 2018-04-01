@@ -53,7 +53,7 @@ def execute(filename, filedata, modifyggpk):
             return None, None, None
 
     try :
-        # max size allowed = width or height
+        # max size allowed = width or height 32
         dds = kivy_img_dds.DDSFile(filedata, 32)
         filedata = dds.out
         #print("%d x %d %s %d %s" % (dds.width, dds.height, dds.dxt, dds.mipmapCount, filename))

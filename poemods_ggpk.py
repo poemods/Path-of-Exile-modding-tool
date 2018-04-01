@@ -243,10 +243,13 @@ class listggpkfiles(object):
                     fout.write("%s\t%s\t%d\t%d\t%d\n" % (self.fullfilelistdic[filename]["path"], self.fullfilelistdic[filename]["name"], self.fullfilelistdic[filename]["position"], self.fullfilelistdic[filename]["length"], self.fullfilelistdic[filename]["referenceposition"]))
 
     def defragment(self, defragmentto):
-        if self.forcescan is False :
-            self.rescanggpk(self.ggpkname, True, True)
+        #if self.forcescan is False :
+        #    self.rescanggpk(self.ggpkname, True, True)
         fullfilelist2dic={}
         fullfilelist2dic["."]=copy.copy(self.fullfilelistdic["."])
+        directory = os.path.dirname(defragmentto)
+        if os.path.exists(directory) is False :
+            os.makedirs(directory)
         pos=0
         with open(defragmentto, "wb") as ggpkout :
             with open(self.ggpkname, "rb") as ggpk :
@@ -276,10 +279,10 @@ class listggpkfiles(object):
                 ggpkout.write(b'\x10\x00\x00\x00\x46\x52\x45\x45\x00\x00\x00\x00\x00\x00\x00\x00')
                 ggpkout.seek(self.firstfreerecord)
                 ggpkout.write(writenewaddress)
-        self.fullfilelistdic.clear()
-        self.fullfilelistdic=copy.deepcopy(fullfilelist2dic)
-        self.ggpksize=os.path.getsize(self.ggpkname)
-        self.saveinfo()
+        #self.fullfilelistdic.clear()
+        #self.fullfilelistdic=copy.deepcopy(fullfilelist2dic)
+        #self.ggpksize=os.path.getsize(self.ggpkname)
+        #self.saveinfo()
 
     def stringcleanup(self, piece, encoding):
         bom=b''
