@@ -1,12 +1,12 @@
 # Path of Exile modding tool and mods
 
 - Search modify compare extract insert replace armour spells microtransactions in any way.
-- Restrict and exclude filters to modify only some files.
-- Many known mods (.aoc. .otc .epk .pet .atlas .env ...) or create yours.
+- Many known mods (.aoc .otc .epk .pet .atlas .env ...) or create yours.
 - Batch process files. Create automods (.txt files with basic filters and commands) to apply all your mods in sequence (see two examples below).
+- Restrict and exclude filters to modify only some files.
 - Resize textures. Textures (.DDS) are decompressed when extracted, ready to feed a DDS optimizer (DDSOpt, ...) to improve both performance and quality.
 - Automatic backup. Defragment. Works on all PoE versions, does not depend on Grinding Gear Games updates : file search and file mods rely on Python.re regular expressions
-- Any OS. Install [Python 3](https://www.python.org/) and as admin run `pip3 install brotli`. Click or run `__init__.py` to launch app.
+- Any OS. Install [Python 3](https://www.python.org/) and as admin run `pip3 install brotli`. Click `__init__.py` to launch app.
 
 ## TabulaRasa model change for MTX
 
@@ -27,9 +27,30 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 
 *Another automod : improved Advanced PoeSmoother, does not depend on GGG updates.*
 
-## Create a new mod
+# Tutorials
 
-#### Basic
+#### Invisible spell
+
+![invisible molten_strike](docs/InvisibleSpell.png)
+
+1. Narrow down the search results to your spell thanks to the include/exclude filters.
+2. Select the "Mods By Extension" automod.
+3. Check the .aoc harder, .epk and .pet checkboxes
+4. Check "Use your restrict/exclude filter as well"
+5. Click Modify
+
+#### 6-boxing bot config
+
+![6-boxing bots](docs/6BoxingBot.png)
+
+1. Select the "Mods by extension" automod.
+2. Check almost everything (See pic above).
+3. Click Modify
+4. Click "Defragment" and then "Defragment now"
+5. Copy over the defragmented Content.ggpk.defrag to your Content.ggpk
+6. In Path of Exile's production_Config.ini put texture_quality=10
+
+#### Basic mod
 
 1. Create a new file in the mods folder named trl_0.py
 ```
