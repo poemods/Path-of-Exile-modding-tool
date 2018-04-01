@@ -55,9 +55,9 @@ title ".otc : disable_rendering" coloryellow
 restriction "\.otc$"
 execute "otc"
 
-title ".aoc .otc .ao : Invisible but animated" coloryellow
-restriction "\.(ao|aoc|otc)$"
-execute "aoc_otc_ao"
+#title ".aoc .otc .ao : Invisible but animated" coloryellow
+#restriction "\.(ao|aoc|otc)$"
+#execute "aoc_otc_ao"
 
 title ".env harder : black screen" colorred
 restriction "\.env$"

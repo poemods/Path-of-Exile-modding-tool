@@ -16,8 +16,7 @@ masterfilter_exclude=[
 
 def execute(filename, backupfiledata, modifyggpk):
     filedata, encoding, bom = modifyggpk.stringcleanup(backupfiledata, "UTF-16-LE")
-    filedatamod=filedata
-    #filedatamod=re.sub(r'\w*MeshSegment.*?;', r'DisableRendering();', filedatamod)
-    filedatamod=re.sub(r'\w*MeshSegment.*?;', r'', filedatamod)
+    filedatamod=re.sub(r'\w*Mesh[^\";]*', r'DisableRendering(); ', filedata)
+    filedatamod=re.sub(r'(DisableRendering(); ){2,}', r'DisableRendering(); ', filedatamod)
     return filedatamod, encoding, bom
 
