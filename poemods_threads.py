@@ -12,6 +12,7 @@ import threading
 import queue
 import poemods_ggpk
 import brotli
+import random
 
 class manager(object):
     def __init__(self, actionqueue, searchqueue, viewqueue):
@@ -109,6 +110,16 @@ class manager(object):
                     continue
                 matchinglist=self.getfilteredlist(vala[1], vala[2], vala[3], vala[4])
                 matchinglistl=len(matchinglist)
+
+
+#                 newmatch = []
+#                 for i in range(min(matchinglistl, 1000)) :
+#                     newmatch.append(matchinglist[random.randint(0, matchinglistl)])
+#                 matchinglist.clear()
+#                 matchinglist=copy.copy(newmatch)
+#                 matchinglistl=len(matchinglist)
+
+
                 self.sendmessage.put(["%d files are being modified by module : %s" % (matchinglistl, vala[5]), "modify", vala[6], True])
                 self.maxcount=matchinglistl
                 self.curcount=0

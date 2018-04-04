@@ -55,10 +55,6 @@ title ".otc : disable_rendering" coloryellow
 restriction "\.otc$"
 execute "otc"
 
-#title ".aoc .otc .ao : Invisible but animated" coloryellow
-#restriction "\.(ao|aoc|otc)$"
-#execute "aoc_otc_ao"
-
 title ".env harder : black screen" colorred
 restriction "\.env$"
 execute "env_harder"
@@ -75,16 +71,23 @@ title ".ot : remove Dead bodies after kill" colorred
 restriction "^\./Metadata/Monsters/Monster\.ot$"
 execute "ot"
 
+
+
+
+
+
 title ".dds : Textures (resize <= px max)" colorred
-exclude "/Art/2DArt/.*\.dds$"                        # skill buff icons
-exclude "/Art/2DItems/.*\.dds$"                      # 2D Armour
+
+exclude "/Art/2DItems/.*\.dds$"                           # 2D Armour flasks do not resize
+exclude "/Art/Textures/Interface/2D/.*\.dds$"             # interface do not resize
+
+#restriction "/Art/2DArt/.*\.dds$"
 #restriction "/Art/Microtransactions/.*\.dds$"
 #restriction "/Art/Models/.*\.dds$"
 #restriction "/Art/particles/.*\.dds$"
 #restriction "/Art/Textures/Characters/.*\.dds$"
 #restriction "/Art/Textures/Doodads/.*\.dds$"
 #restriction "/Art/Textures/Environment/.*\.dds$"
-exclude "/Art/Textures/Interface/2D/.*\.dds$"        # interface buttons
 #restriction "/Art/Textures/Items/.*\.dds$"
 #restriction "/Art/Textures/Misc/.*\.dds$"
 #restriction "/Art/Textures/Monsters/.*\.dds$"
@@ -92,7 +95,9 @@ exclude "/Art/Textures/Interface/2D/.*\.dds$"        # interface buttons
 #restriction "/Art/Textures/Pet/.*\.dds$"
 #restriction "/Metadata/EnvironmentSettings/.*\.dds$"
 #restriction "/minimap/.*\.dds$"
+
 restriction "\.dds$"
+
 execute "dds"
 
 

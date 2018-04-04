@@ -8,7 +8,7 @@
 - Automatic backup. Defragment. Works on all PoE versions, does not depend on Grinding Gear Games updates : file search and file mods rely on Python.re regular expressions
 - Any OS. Install [Python 3](https://www.python.org/) and as admin run `pip3 install brotli`. Click `__init__.py` to launch app.
 
-## TabulaRasa model change for MTX
+### Example : TabulaRasa model change for MTX
 
 ![Tabula Rasa model change](docs/TabulaRasaMod.png)
 
@@ -21,7 +21,7 @@ restriction "BodyArmours.*TabulaRasa/BodyTabulaRasaStrInt.sm$"
 replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$"
 ```
 
-## Advanced PoeSmoother
+### Example : Advanced PoeSmoother
 
 ![Advanced PoeSmoother](docs/Scrot.png)
 
@@ -29,7 +29,7 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 
 # Tutorials
 
-#### Invisible spell
+### Make a spell invisible
 
 ![invisible molten_strike](docs/InvisibleSpell.png)
 
@@ -39,7 +39,7 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 4. Check "Use your restrict/exclude filter as well"
 5. Click Modify
 
-#### 6-boxing bot config
+### Config for bots
 
 ![6-boxing bot](docs/6BoxingBot.png)
 
@@ -51,7 +51,7 @@ replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$
 7. Close the app or click the Scan button
 8. In Path of Exile's production_Config.ini put texture_quality=10
 
-#### Basic mod
+### Create a new mod
 
 1. Create a new file in the mods folder named trl_0.py
 ```
@@ -71,7 +71,7 @@ restriction "\.trl$"
 execute "trl_0"
 ```
 
-#### Using Python.re
+### Create a mod using Python.re
 
 1. Create a new file in the mods folder named aoc_nosound.py
 ```
@@ -93,7 +93,7 @@ restriction "\.aoc$"
 execute "aoc_nosound"
 ```
 
-## Autmods commands
+### Autmods available commands
 
 Each .txt file put in the automods folder will be shown in the application. All commands are executed in sequence.
 
