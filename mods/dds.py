@@ -28,7 +28,7 @@ def execute(filename, filedata, modifyggpk):
         size = int.from_bytes(filedata[:4], 'little')
         filedata = brotli.decompress(filedata[4:])
         if len(filedata)!=size :
-            print("Error wrong size after brotli decode")
+            print("Error wrong size after brotli decode %s" % (filename))
             return None, None, None
 
     try :

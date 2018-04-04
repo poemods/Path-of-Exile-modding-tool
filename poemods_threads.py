@@ -17,6 +17,8 @@ import random
 class manager(object):
     def __init__(self, actionqueue, searchqueue, viewqueue):
         self.modg=poemods_ggpk.listggpkfiles()
+        if os.path.exists("extracted") is False :
+            os.makedirs("extracted")
         self.actionqueue=actionqueue
         self.searchqueue=searchqueue
         self.viewqueue=viewqueue
