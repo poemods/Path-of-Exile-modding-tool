@@ -6,7 +6,7 @@
 - Restrict and exclude filters to modify only some files.
 - Resize textures. Textures (.DDS) are decompressed when extracted, ready to feed a DDS optimizer (DDSOpt, ...) to improve both performance and quality.
 - Automatic backup. Defragment. Works on all PoE versions, does not depend on Grinding Gear Games updates : file search and file mods rely on Python.re regular expressions
-- Any OS. Install [Python 3](https://www.python.org/) and as admin run `pip3 install brotli`. Click `__init__.py` to launch app.
+- Any OS. Install [Python 3](https://www.python.org/). Open the command line and run `pip3 install brotli`. Click `__init__.py` to launch app.
 
 ### Example : TabulaRasa model change for MTX
 
@@ -16,7 +16,7 @@
 
 Create a .txt file with the following commands, put it in the automods folder and it will show up in the program.
 ```
-name "Tabula Rasa model change"
+name "Change TabulaRasa model"
 restriction "BodyArmours.*TabulaRasa/BodyTabulaRasaStrInt.sm$"
 replacewith "BodyArmours/Microtransactions/DeicideArmour/DeicideArmourStrInt.sm$"
 ```
