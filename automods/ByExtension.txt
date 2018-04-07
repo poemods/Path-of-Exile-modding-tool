@@ -23,7 +23,7 @@ restriction "^\./Metadata/Effects/Spells/.*\.aoc$"
 restriction "^\./Metadata/Terrain/Doodads/.*\.aoc$"
 execute "aoc_harder"
 
-title ".ao : Hull AttachedAnimatedObjects" colorgreen
+title ".ao : remove Hull" colorgreen
 restriction "\.ao$"
 execute "ao"
 
