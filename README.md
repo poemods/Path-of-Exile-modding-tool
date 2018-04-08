@@ -79,7 +79,7 @@ import re
 def execute(filename, backupfiledata, modifyggpk):
   filedata, encoding, bom = modifyggpk.stringcleanup(backupfiledata, "UTF-16-LE")
   # -- modify filedata string here --
-  filedatamod=re.sub(r'SoundEvents.*?\{.*?\}', r'SoundEvents\r\n{\r\n}', filedata, flags=re.DOTALL)
+  filedatamod=re.sub(r'SoundEvents[\t\r\n ]*\{.*?\}[\t\r ]*(\n|$)', r'SoundEvents\r\n{\r\n}\r\n', filedatamod, flags=re.DOTALL)
   # ...
   # -- give back filedatamod string --
   return filedatamod, encoding, bom
@@ -103,14 +103,14 @@ Each .txt file put in the automods folder will be shown in the application. All 
 *will create a checkbox to apply (or not) everything following, up to the next title (0 or more)*
 3. *one or more of these filters :*
    - __restriction "*Python.re regular expression*"__
-	 *files matching these filters will be modified*
+   *files matching these filters will be modified*
    - __exclude "*Python.re regexp*"__
-	 *files matching these filters will not be modified*
+   *files matching these filters will not be modified*
 4. *one of these commands :*
    - __execute "*mod_filename_noext*"__
      *executes mod_filename_noext.py that should exist in the mods folder*
    - __replacewith "*Python.re regexp*"__
-	 *replaces the file with another one from the game, there should be only one match to this replacewith regexp.*
+   *replaces the file with another one from the game, there should be only one match to this replacewith regexp.*
    - __restore "*Python.re regexp*"__
      *restores the original files matching Python.re regexp*
    - __extract "*Python.re regexp*"__
