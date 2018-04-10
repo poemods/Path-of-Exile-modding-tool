@@ -265,6 +265,13 @@ def automodsexecute(restore):
                                 actionqueue.put(["replacewith", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy(), replace.group(2)])
                             restrictfilter.clear()
                             excludefilter.clear()
+                        elif replace.group(1)=="replacewithasset" :
+                            if restore is True :
+                                actionqueue.put(["restore", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
+                            else :
+                                actionqueue.put(["replacewithasset", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy(), replace.group(2)])
+                            restrictfilter.clear()
+                            excludefilter.clear()
 
 def selectsearchcallback():
     global automodspickedup

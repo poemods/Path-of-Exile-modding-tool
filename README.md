@@ -98,19 +98,21 @@ execute "aoc_nosound"
 Each .txt file put in the automods folder will be shown in the application. All commands are executed in sequence.
 
 1. __name "*xyz*"__
-*will show the xyz automod in the app*
+    *will show the xyz automod in the app*
 2. __title "*first checkbox*"__
-*will create a checkbox to apply (or not) everything following, up to the next title (0 or more)*
+    *will create a checkbox to apply (or not) everything following, up to the next title (0 or more)*
 3. *one or more of these filters :*
    - __restriction "*Python.re regular expression*"__
-   *files matching these filters will be modified*
+     *files matching these filters will be modified*
    - __exclude "*Python.re regexp*"__
-   *files matching these filters will not be modified*
+     *files matching these filters will not be modified*
 4. *one of these commands :*
    - __execute "*mod_filename_noext*"__
      *executes mod_filename_noext.py that should exist in the mods folder*
    - __replacewith "*Python.re regexp*"__
-   *replaces the file with another one from the game, there should be only one match to this replacewith regexp.*
+     *replaces files with another one from the game, there should be only one match to this replacewith regexp.*
+   - __replacewithasset "*filename.ext*"__
+     *replaces files with the file filename.ext in the assets folder.*
    - __restore "*Python.re regexp*"__
      *restores the original files matching Python.re regexp*
    - __extract "*Python.re regexp*"__

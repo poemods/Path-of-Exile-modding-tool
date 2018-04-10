@@ -172,6 +172,30 @@ class manager(object):
                         self.sendmessage.put(["Only one file can replace others.", "replacewith", "", False])
                 else :
                      self.sendmessage.put(["No replace restrict/exclude filter found."])
+            elif vala[0]=="replacewithasset" :
+                if os.path.exists("assets") is False :
+                    self.sendmessage.put(["Please create a folder named assets."])
+                    continue
+                if len(self.modg.fullfilelistdic)>0 :
+                    matchinglist=self.getfilteredlist(vala[1], vala[2], vala[3], vala[4])
+                    self.sendmessage.put(["%d files are being replaced by assets %s" % (len(matchinglist), vala[5]), "replacewithasset", "", True])
+                    targetfilename=os.path.join("assets", vala[5])
+                    if os.path.exists(targetfilename) is True :
+                        piece=b''
+                        with open(targetfilename, "rb") as fin :
+                            piece=fin.read()
+                        with open(self.modg.ggpkname, "r+b") as ggpkpointerio :
+                            count=0
+                            for filename in matchinglist :
+                                writethis = self.modg.generateheader(filename, piece)
+                                self.modg.writebinarydata(filename, writethis, ggpkpointerio)
+                                count+=1
+                        self.modg.saveinfo()
+                        self.sendmessage.put(["%d files replaced." % (count), "replacewithasset", "", False])
+                    else :
+                        self.sendmessage.put(["Please put %s in the assets folder first." % (vala[5])])
+                else :
+                    self.sendmessage.put(["Please scan backup Content.ggpk first."])
 
     def encodeddsneeded(self, filedata):
         if filedata is None :
