@@ -59,6 +59,10 @@ def updatelist():
         labellistsize.set("%d files" % (len(matchinglist)))
     root.after(250, updatelist)
 
+def leftclickonthelist(event) :
+    global filelistmatchcurselection
+    filelistmatchcurselection=""
+
 def updateview():
     global filelistmatchcurselection
     newselection=filelistmatch.curselection()
@@ -414,6 +418,7 @@ framelist=Frame(framesearchfound)
 scrollbarlist = Scrollbar(framelist)
 scrollbarlist.pack(side=RIGHT, fill=Y)
 filelistmatch = Listbox(framelist, height=30, font=(myfontfamily, myfontsize), yscrollcommand = scrollbarlist.set)
+filelistmatch.bind("<Button-1>", leftclickonthelist)
 filelistmatch.pack(fill=X)
 scrollbarlist.config(command=filelistmatch.yview)
 filelistmatchcurselection=""

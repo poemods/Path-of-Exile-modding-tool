@@ -1,7 +1,7 @@
 
 name "Tabula Rasa model change"
 
-# Tabula Rasa texture and model change for each classes
+# Tabula Rasa texture and model change for each class
 
 # templar = StrInt
 
