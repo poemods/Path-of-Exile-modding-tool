@@ -109,18 +109,18 @@ class listggpkfiles(object):
                             self.firstfreerecord=int(line)
         if rescan is True :
             with open(self.ggpkname, "rb") as ggpk :
-                record_length = int.from_bytes(ggpk.read(4), byteorder='little', signed=True)
+                record_length = int.from_bytes(ggpk.read(4), byteorder='little', signed=False)
                 tag = ggpk.read(4).decode("UTF-8")
                 if tag != "GGPK":
                     print("not a valid GGPK given")
                     self.ggpkname=None
                     return None
-                child_count = int.from_bytes(ggpk.read(4), byteorder='little', signed=True)
+                child_count = int.from_bytes(ggpk.read(4), byteorder='little', signed=False)
                 headerlength = 4 + 4 + 4
                 children = []
                 for i in range(child_count):
                     pos=ggpk.tell()
-                    absolute_offset = int.from_bytes(ggpk.read(8), byteorder='little', signed=True)
+                    absolute_offset = int.from_bytes(ggpk.read(8), byteorder='little', signed=False)
                     self.refdic[absolute_offset]=pos
                     children.append(absolute_offset)
                 filename="."
@@ -146,17 +146,17 @@ class listggpkfiles(object):
             buffer = ggpk.read(81920)
             bi = 0
             bf = bi+4
-            record_length = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+            record_length = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
             bi = bf
             bf = bi+4
             tag = buffer[bi:bf].decode("UTF-8")
             if tag == "PDIR":
                 bi = bf
                 bf = bi+4
-                name_length = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+                name_length = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
                 bi = bf
                 bf = bi+4
-                child_count = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+                child_count = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
                 bi = bf
                 bf = bi+32
                 # digest = buffer[bi:bf]
@@ -168,10 +168,10 @@ class listggpkfiles(object):
                 for i in range(child_count):
                     bi = bf
                     bf = bi+4
-                    #timestamp = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+                    #timestamp = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
                     bi = bf
                     bf = bi+8
-                    absolute_offset = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+                    absolute_offset = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
                     self.refdic[absolute_offset]=absoluteposition+4+4+4+4+32+name_length*2+12*i+4
                     children.append(absolute_offset)
                 self.fullfilelist.append(path+name+"/")
@@ -187,7 +187,7 @@ class listggpkfiles(object):
             elif tag == "FILE":
                 bi = bf
                 bf = bi+4
-                name_length = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+                name_length = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
                 bi = bf
                 bf = bi+32
                 # digest = buffer[bi:bf]
@@ -207,7 +207,7 @@ class listggpkfiles(object):
             elif tag == "FREE":
                 bi = bf
                 bf = bi+8
-                next_record = int.from_bytes(buffer[bi:bf], byteorder='little', signed=True)
+                next_record = int.from_bytes(buffer[bi:bf], byteorder='little', signed=False)
                 if self.firstfreerecord==-1 :
                     print("%12d %6d (%4d) %s first free record -> %d" % (absoluteposition, record_length, 8, path, next_record))
                     self.firstfreerecord=self.refdic[absoluteposition]
@@ -269,12 +269,12 @@ class listggpkfiles(object):
                     newrefpos=self.fullfilelistdic[name]["referenceposition"]-self.fullfilelistdic[path]["position"]+fullfilelist2dic[path]["position"]
                     fullfilelist2dic[name]["referenceposition"]=newrefpos
                     ggpkout.seek(newrefpos)
-                    writenewaddress=(pos).to_bytes(8, byteorder='little', signed=True)
+                    writenewaddress=(pos).to_bytes(8, byteorder='little', signed=False)
                     ggpkout.write(writenewaddress)
                     pos+=self.fullfilelistdic[name]["length"]
                     ggpkout.seek(pos)
             if self.firstfreerecord!=-1 :
-                writenewaddress=(pos).to_bytes(8, byteorder='little', signed=True)
+                writenewaddress=(pos).to_bytes(8, byteorder='little', signed=False)
                 # 00000016FREE00000000
                 ggpkout.write(b'\x10\x00\x00\x00\x46\x52\x45\x45\x00\x00\x00\x00\x00\x00\x00\x00')
                 ggpkout.seek(self.firstfreerecord)
@@ -332,9 +332,9 @@ class listggpkfiles(object):
         justfilenamel=len(self.fullfilelistdic[filename]["name"])+1
         headerlength=46+len(self.fullfilelistdic[filename]["name"])*2
         record_length=headerlength+len(writethis)
-        field1=(record_length).to_bytes(4, byteorder='little', signed=True)
+        field1=(record_length).to_bytes(4, byteorder='little', signed=False)
         field2="FILE".encode("UTF-8")
-        field3=(justfilenamel).to_bytes(4, byteorder='little', signed=True)
+        field3=(justfilenamel).to_bytes(4, byteorder='little', signed=False)
         field4=hashlib.sha256(writethis).digest()
         field5=justfilename
         bwritethis=field1+field2+field3+field4+field5+writethis
@@ -371,7 +371,7 @@ class listggpkfiles(object):
             ggpkpointer.seek(endofggpk)
             ggpkpointer.write(writethis)
             ggpkpointer.seek(self.fullfilelistdic[filename]["referenceposition"])
-            bggpksize=(endofggpk).to_bytes(8, byteorder='little', signed=True)
+            bggpksize=(endofggpk).to_bytes(8, byteorder='little', signed=False)
             ggpkpointer.write(bggpksize)
             self.fullfilelistdic[filename]["position"]=endofggpk
             self.fullfilelistdic[filename]["length"]=record_length

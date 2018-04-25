@@ -196,6 +196,16 @@ def getdefaultpath():
     else :
         savedefaultpath()
 
+def restoreopcallback():
+    restrict=[]
+    exclude=[]
+    myfilterselect=filterselect.get()
+    if myfilterselect==1 :
+        restrict=getrestrict()
+        exclude=getexclude()
+    if len(restrict)>0 or len(exclude)>0 :
+        actionqueue.put(["restore", [], [], restrict.copy(), exclude.copy()])
+
 def restorecallback():
     automodsexecute(True)
 
@@ -211,6 +221,7 @@ def automodsexecute(restore):
     if myfilterselect==1 :
         restrict=getrestrict()
         exclude=getexclude()
+    nothingrestored=True
     ignorelist=[]
     for title in autocheck :
         if autocheck[title][0].get()==0 :
@@ -243,12 +254,14 @@ def automodsexecute(restore):
                         elif replace.group(1)=="execute" :
                             if restore is True :
                                 actionqueue.put(["restore", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
+                                nothingrestored=False
                             else :
                                 actionqueue.put(["modify", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy(), replace.group(2), lasttitle])
                             restrictfilter.clear()
                             excludefilter.clear()
                         elif replace.group(1)=="restore" :
                             actionqueue.put(["restore", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
+                            nothingrestored=False
                             restrictfilter.clear()
                             excludefilter.clear()
                         elif replace.group(1)=="extract" :
@@ -258,6 +271,7 @@ def automodsexecute(restore):
                         elif replace.group(1)=="insert" :
                             if restore is True :
                                 actionqueue.put(["restore", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
+                                nothingrestored=False
                             else :
                                 actionqueue.put(["insert", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
                             restrictfilter.clear()
@@ -265,6 +279,7 @@ def automodsexecute(restore):
                         elif replace.group(1)=="replacewith" :
                             if restore is True :
                                 actionqueue.put(["restore", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
+                                nothingrestored=False
                             else :
                                 actionqueue.put(["replacewith", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy(), replace.group(2)])
                             restrictfilter.clear()
@@ -272,10 +287,14 @@ def automodsexecute(restore):
                         elif replace.group(1)=="replacewithasset" :
                             if restore is True :
                                 actionqueue.put(["restore", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy()])
+                                nothingrestored=False
                             else :
                                 actionqueue.put(["replacewithasset", restrictfilter.copy(), excludefilter.copy(), restrict.copy(), exclude.copy(), replace.group(2)])
                             restrictfilter.clear()
                             excludefilter.clear()
+    #if restore is True and nothingrestored is True :
+    #    if len(restrict)>0 or len(exclude)>0 :
+    #        actionqueue.put(["restore", [], [], restrict.copy(), exclude.copy()])
 
 def selectsearchcallback():
     global automodspickedup
@@ -404,6 +423,8 @@ frameexecute4.pack(fill=X, expand=1)
 
 frameexecute2=Frame(framesearch)
 Label(frameexecute2, font=(myfontfamily, myfontsize), text="restrict filter").pack(side=LEFT, expand=1, fill=X, anchor=E)
+tkthingy["restoreop"]=Button(frameexecute2, text ="Restore", font=(myfontfamily, myfontsize), command = restoreopcallback)
+tkthingy["restoreop"].pack(side=LEFT)
 tkthingy["extract"]=Button(frameexecute2, text ="Extract", font=(myfontfamily, myfontsize), command = extractcallback)
 tkthingy["extract"].pack(side=LEFT)
 tkthingy["insert"]=Button(frameexecute2, text ="Insert", font=(myfontfamily, myfontsize), command = insertcallback)
