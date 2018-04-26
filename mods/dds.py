@@ -7,9 +7,6 @@ restriction "\.dds$"
 
 '''
 
-#with open(os.path.join("assets", "minimal.dds"), "rb") as fin :
-#   minimaldds=fin.read()
-
 def execute(filename, filedata, modifyggpk):
     if filedata[0] == ord("*") and filedata[3]>=0x20 :
         return None, None, None
@@ -25,7 +22,7 @@ def execute(filename, filedata, modifyggpk):
     try :
         dds = kivy_img_dds.DDSFile(filedata)
 
-        # reduce image size :
+        # reduce texture size :
         #
         #   -  by factor 3 :
         # filedata = dds.stripratiomipmap(3)
@@ -39,8 +36,8 @@ def execute(filename, filedata, modifyggpk):
         print("%s %s" % (str(e), filename))
         return None, None, None
 
-    # uncomment this to reencode dds files with brotli :
-    # (if they were encoded originally)
+    # reencode dds files with brotli
+    # if they were encoded originally
     #
     #if reencodeneeded is True :
     #    filedatal=len(filedata)

@@ -199,10 +199,8 @@ def getdefaultpath():
 def restoreopcallback():
     restrict=[]
     exclude=[]
-    myfilterselect=filterselect.get()
-    if myfilterselect==1 :
-        restrict=getrestrict()
-        exclude=getexclude()
+    restrict=getrestrict()
+    exclude=getexclude()
     if len(restrict)>0 or len(exclude)>0 :
         actionqueue.put(["restore", [], [], restrict.copy(), exclude.copy()])
 
