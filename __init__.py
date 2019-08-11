@@ -339,7 +339,7 @@ def onchangeautomodsfile(*args):
                 if replace is not None :
                     title=replace.group(1)
                     autocheck[title]=[IntVar(), None]
-                    autocheck[title][1]=Checkbutton(frameautocheck, text=title, font=(myfontfamily, myfontsize), variable=autocheck[title][0], fg="#000000", onvalue=1, offvalue=0, height=2)
+                    autocheck[title][1]=Checkbutton(frameautocheck, text=title, font=(myfontfamily, myfontsize), variable=autocheck[title][0], fg="#000000", onvalue=1, offvalue=0, height=1)
                     autocheck[title][1].pack(anchor=W)
     frameautocheck.pack(anchor=W)
     frameexecute.pack(side=BOTTOM, fill=BOTH, pady=10)
@@ -436,7 +436,7 @@ framesearch.pack(fill=X)
 framelist=Frame(framesearchfound)
 scrollbarlist = Scrollbar(framelist)
 scrollbarlist.pack(side=RIGHT, fill=Y)
-filelistmatch = Listbox(framelist, height=30, font=(myfontfamily, myfontsize), yscrollcommand = scrollbarlist.set)
+filelistmatch = Listbox(framelist, height=20, font=(myfontfamily, myfontsize), yscrollcommand = scrollbarlist.set)
 filelistmatch.bind("<Button-1>", leftclickonthelist)
 filelistmatch.pack(fill=X)
 scrollbarlist.config(command=filelistmatch.yview)
